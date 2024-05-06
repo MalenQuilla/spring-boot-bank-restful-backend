@@ -30,8 +30,16 @@ public class SwaggerConfig {
     @Bean
     public GroupedOpenApi accountOpenApi() {
         return GroupedOpenApi.builder()
-                .group("Account Management")
+                .group("Account Page")
                 .pathsToMatch("/api/v1/account/**")
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi adminOpenApi() {
+        return GroupedOpenApi.builder()
+                .group("Admin Page")
+                .pathsToMatch("/api/v1/admin/**")
                 .build();
     }
 }

@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
+import java.sql.Date;
 import java.util.Set;
 
 @Getter
@@ -22,6 +23,17 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Min(value = 0)
     private Long id;
+
+    @NotNull
+    @Size(min = 3, max = 50)
+    private String firstName;
+
+    @NotNull
+    @Size(min = 3, max = 50)
+    private String lastName;
+
+    @NotNull
+    private Date DOB;
 
     @NotNull
     @Size(max = 20)
@@ -48,7 +60,10 @@ public class User {
     @JsonIgnore
     private EStatus status;
 
-    public User(String username, String email, String password, EStatus status) {
+    public User(String firstName, String lastName, Date DOB, String username, String email, String password, EStatus status) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.DOB = DOB;
         this.username = username;
         this.email = email;
         this.password = password;
@@ -57,8 +72,6 @@ public class User {
 
     @JsonIgnore
     public boolean isAdmin() {
-        Set<Role> roles = this.getRoles();
-
         for (Role role : roles) {
             if (role.getName().equals(ERole.ROLE_ADMIN)) {
                 return true;

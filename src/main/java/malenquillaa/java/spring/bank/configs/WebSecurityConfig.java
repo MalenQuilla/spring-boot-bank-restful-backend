@@ -1,5 +1,6 @@
 package malenquillaa.java.spring.bank.configs;
 
+import malenquillaa.java.spring.bank.services.security.jwt.AuthEntryPoint;
 import malenquillaa.java.spring.bank.services.security.jwt.AuthTokenFilter;
 import malenquillaa.java.spring.bank.services.security.jwt.JwtUtils;
 import malenquillaa.java.spring.bank.services.security.services.UserDetailsServiceImpl;
@@ -29,6 +30,11 @@ public class WebSecurityConfig {
     @Autowired
     public WebSecurityConfig(UserDetailsServiceImpl userDetailsService) {
         this.userDetailsService = userDetailsService;
+    }
+
+    @Bean
+    public AuthEntryPoint authEntryPoint() {
+        return new AuthEntryPoint() {};
     }
 
     @Bean
@@ -78,10 +84,11 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
+                .exceptionHandling(exception -> exception.authenticationEntryPoint(authEntryPoint()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeRequests(authorizeRequests ->
+                .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests.requestMatchers(AUTH_WHITELIST).permitAll()
-                                        .requestMatchers("/api/account/**").permitAll()
+                                        .requestMatchers("/api/v1/account/auth/**").permitAll()
                                         .anyRequest().fullyAuthenticated()
                 );
 
