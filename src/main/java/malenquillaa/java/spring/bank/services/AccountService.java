@@ -38,6 +38,7 @@ public class AccountService {
     CustomerAccountRepository customerAccountRepository;
     JwtUtils jwtUtils;
     PasswordEncoder passwordEncoder;
+    AccountNumberService accountNumberService;
 
     @Autowired
     AccountService(UserRepository userRepository,
@@ -46,7 +47,8 @@ public class AccountService {
                    PasswordEncoder passwordEncoder,
                    RoleRepository roleRepository,
                    AuthenticationManager authenticationManager,
-                   UserDetailsServiceImpl userDetailsServiceImpl) {
+                   UserDetailsServiceImpl userDetailsServiceImpl,
+                   AccountNumberService accountNumberService) {
         this.userRepository = userRepository;
         this.customerAccountRepository = customerAccountRepository;
         this.jwtUtils = jwtUtils;
@@ -54,6 +56,7 @@ public class AccountService {
         this.roleRepository = roleRepository;
         this.authenticationManager = authenticationManager;
         this.userDetailsServiceImpl = userDetailsServiceImpl;
+        this.accountNumberService = accountNumberService;
     }
 
     public void createAccount(SignupRequest signupRequest) {
@@ -115,7 +118,7 @@ public class AccountService {
         roles.forEach(role -> {
             switch (role.getName()) {
                 case ERole.ROLE_CUSTOMER:
-                    CustomerAccount customerAccount = new CustomerAccount(user, "");
+                    CustomerAccount customerAccount = new CustomerAccount(user, accountNumberService.generate(user));
                     customerAccountRepository.save(customerAccount);
                     break;
                 case ERole.ROLE_STAFF, ERole.ROLE_ADMIN:
