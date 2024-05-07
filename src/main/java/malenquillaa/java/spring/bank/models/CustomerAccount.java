@@ -2,15 +2,12 @@ package malenquillaa.java.spring.bank.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Data
 @NoArgsConstructor
-@Getter
-@Setter
 @Entity
 @Table(name = "customers",
         uniqueConstraints = {
@@ -20,10 +17,11 @@ public class CustomerAccount {
     @Id
     @JsonIgnore
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long customerId;
+    private Long id;
 
     private String accountNumber;
 
+    @Min(0)
     private Long balance = 50000L;
 
     private String currency = "VND";

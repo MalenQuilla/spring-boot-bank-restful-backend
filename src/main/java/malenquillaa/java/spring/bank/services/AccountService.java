@@ -1,6 +1,5 @@
 package malenquillaa.java.spring.bank.services;
 
-import jakarta.transaction.Transactional;
 import malenquillaa.java.spring.bank.models.*;
 import malenquillaa.java.spring.bank.models.payloads.requests.LoginRequest;
 import malenquillaa.java.spring.bank.models.payloads.requests.SignupRequest;
@@ -21,6 +20,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
@@ -28,7 +29,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional(Transactional.TxType.REQUIRED)
+@Transactional(propagation = Propagation.REQUIRED)
 public class AccountService {
 
     UserDetailsServiceImpl userDetailsServiceImpl;
@@ -88,13 +89,13 @@ public class AccountService {
         } else {
             strRoles.forEach(role -> {
                 switch (role) {
-                    case "admin":
+                    case "ADMIN":
                         Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
                                 .orElseThrow(() -> new RuntimeException("Role not found"));
                         roles.add(adminRole);
 
                         break;
-                    case "staff":
+                    case "STAFF":
                         Role modRole = roleRepository.findByName(ERole.ROLE_STAFF)
                                 .orElseThrow(() -> new RuntimeException("Role not found"));
                         roles.add(modRole);
