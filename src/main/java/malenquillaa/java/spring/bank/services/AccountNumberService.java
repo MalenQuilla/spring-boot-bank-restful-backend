@@ -1,16 +1,10 @@
 package malenquillaa.java.spring.bank.services;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
 import malenquillaa.java.spring.bank.models.User;
 import org.springframework.stereotype.Service;
 
 import java.util.Random;
 
-@Setter
-@Getter
-@AllArgsConstructor
 @Service
 public class AccountNumberService {
 
@@ -22,7 +16,7 @@ public class AccountNumberService {
         String core = var1 + var2;
 
         if (core.length() > 15) {
-            throw new RuntimeException("Maximum number of users exceeded");
+            throw new RuntimeException("Maximum number of users exceeded"); // over 99 billion users
         }
 
         Random rand = new Random();
