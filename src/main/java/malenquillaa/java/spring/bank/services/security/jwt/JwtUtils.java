@@ -18,6 +18,9 @@ public class JwtUtils {
     @Value("${malenquillaa.app.jwtExpirationMs}")
     private long jwtExpirationMs;
 
+    @Value("${malenquillaa.app.timestampExpirationMs}")
+    private long timestampExpirationMs;
+
     public String generateJwtToken(Authentication authentication) {
 
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
@@ -36,6 +39,22 @@ public class JwtUtils {
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
+    }
+
+    public String generateTimestampToken() {
+        return Jwts.builder()
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(new Date().getTime() + timestampExpirationMs))
+                .signWith(SignatureAlgorithm.HS256, jwtSecret)
+                .compact();
+    }
+
+    public Date getIssuedDateFromToken(String token) {
+        return Jwts.parser()
+                .setSigningKey(jwtSecret)
+                .parseClaimsJws(token)
+                .getBody()
+                .getIssuedAt();
     }
 
     public boolean validateJwtToken(String authToken) {

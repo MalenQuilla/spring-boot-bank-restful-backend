@@ -10,6 +10,10 @@ import java.util.Date;
 @Getter
 @AllArgsConstructor
 public class TransactionResponse {
+    private String fromAccountNumber;
+    private String fromName;
+    private String toAccountNumber;
+    private String toName;
     private Date date;
     private Long openingBalance;
     private Long closingBalance;

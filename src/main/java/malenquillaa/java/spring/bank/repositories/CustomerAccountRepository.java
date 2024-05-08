@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,7 +19,13 @@ public interface CustomerAccountRepository extends JpaRepository<CustomerAccount
 
     Optional<CustomerAccount> findCustomerAccountByUserId(Long id);
 
+    Optional<CustomerAccount> findCustomerAccountByAccountNumberAndUserStatus(String accountNumber, EStatus status);
+
     @Modifying
     @Query("update CustomerAccount ca set ca.balance = :balance where ca = :customerAccount")
     void updateCustomerAccountBalance(CustomerAccount customerAccount, Long balance);
+
+    @Modifying
+    @Query("update CustomerAccount ca set ca.lastTransactionTime = :lastTransactionTime where ca = :customerAccount")
+    void updateLastTransactionTimeByCustomerAccount(CustomerAccount customerAccount, Date lastTransactionTime);
 }
