@@ -18,7 +18,8 @@ import java.nio.file.AccessDeniedException;
 public class ApiExceptionHandler {
     @ExceptionHandler({
             RuntimeException.class,
-            MethodArgumentNotValidException.class
+            MethodArgumentNotValidException.class,
+            IllegalArgumentException.class,
     })
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public MessageResponse handleRuntimeException(Exception e) {
