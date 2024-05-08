@@ -2,6 +2,7 @@ package malenquillaa.java.spring.bank.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Positive;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -25,10 +26,10 @@ public class Transactions {
     @Min(500)
     private Long transactionAmount;
 
-    @Min(0)
+    @Positive
     private Long openingBalance;
 
-    @Min(0)
+    @Positive
     private Long closingBalance;
 
     @ManyToOne(fetch = FetchType.EAGER)
